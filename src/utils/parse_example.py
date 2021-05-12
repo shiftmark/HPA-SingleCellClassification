@@ -25,6 +25,5 @@ class ParseExample:
 
         if self.return_img_name:
             return img_name, img, label
-        else:
-            return img, label
+        return img, label
         

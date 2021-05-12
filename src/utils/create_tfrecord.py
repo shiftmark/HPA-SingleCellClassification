@@ -19,28 +19,32 @@ class CreateTFRecord:
             os.makedirs(self.save_to)
         self.writer = tf.io.TFRecordWriter(self.save_to + 'record.tfrec')
 
-
-    def _bytes_feature(self, value):
+    @staticmethod
+    def _bytes_feature(value):
         '''Returns a bytes_list from a string.'''
         return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value.encode()]))
 
-    def _float_feature(self, value):
+    @staticmethod
+    def _float_feature(value):
         '''Returns a float_list from a float.'''
         return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
-
-    def _int64_feature(self, value):
+    
+    @staticmethod
+    def _int64_feature(value):
         '''Returns an int64_list from a bool / enum / int / uint.'''
         return tf.train.Feature(int64=tf.train.Int64List(value=[value]))
 
-    def _image_feature(self, value):
+    @staticmethod
+    def _image_feature(value):
         '''Returns a bytes_list from a string / byte.'''
         return tf.train.Feature(bytes_list=tf.train.BytesList(value=[tf.io.encode_png(value).numpy()]))
 
-    def serialize(self, img_name, img, label):
+    @classmethod
+    def serialize(cls, img_name, img, label):
         features = {
-            'img_name': self._bytes_feature(img_name),
-            'img': self._image_feature(img),
-            'label': self._label_feature(label)
+            'img_name': cls._bytes_feature(img_name),
+            'img': cls._image_feature(img),
+            'label': cls._label_feature(label)
         }
         example_proto = tf.train.Example(features=tf.train.Features(feature=features))
         return example_proto.SerializeToString()
