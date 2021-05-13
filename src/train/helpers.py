@@ -31,8 +31,7 @@ def plot_images(images, fig_size=(10,10), show_axes=True):
                 raise ValueError(f'The string "{img}" is not a valid local path.')
             else:
                 images[idx] = plt.imread(img)
-
-    
+                
     return plt_img(images)
 
 
