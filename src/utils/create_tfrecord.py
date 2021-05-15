@@ -12,7 +12,7 @@ class CreateTFRecord:
 
     def __init__(self, img_dir, label_dict, save_to='./'):
         self.img_dir = img_dir
-        self.label_dict = label_dict
+        self.label_dict = label_dict 
         self.save_to = save_to
         self.files = [os.listdir(self.img_dir)]
         if not os.path.exists(self.save_to):
