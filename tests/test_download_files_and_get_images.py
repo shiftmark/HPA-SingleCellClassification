@@ -41,18 +41,19 @@ celllines = ['A-431', 'A549', 'EFO-21', 'HAP1', 'HEK 293', 'HUVEC TERT2', 'HaCaT
 df_17 = df[df.Cellline.isin(celllines)]
 print(f'\nThere are {len(df_17)} images in the dataset.')
 print(f'\nThe dataset head is: \n{df_17.head()}.')
-to_download = df_17[0:50]
-print(f'Attmpting to download {len(to_download)} images.')
-for idx, row in to_download.iterrows():
-    try:
-        img = row.Image       
-        for c in colors:
-            img_url = f'{img}_{c}.tif.gz'
-            save_path = '/content/sample_data/hpa'
-            file_name = f'{os.path.basename(img)}_{c}'
-            DownloadFile(img_url, save_path, file_name).as_image('png')
-            print(f'Done: {img} - {c}')
-    except:
-        print(f'Failed to download {img}')
 
-save_masks('/content/sample_data/hpa', '/content/sample_data/hpa/r')
+def test_on(num_img=5):
+    to_download = df_17[0:num_img]
+    print(f'Attmpting to download 4 x {len(to_download)} images. One for each RGBY channel.')
+    for idx, row in to_download.iterrows():
+        try:
+            img = row.Image       
+            for c in colors:
+                img_url = f'{img}_{c}.tif.gz'
+                save_path = '/content/sample_data/hpa'
+                file_name = f'{os.path.basename(img)}_{c}'
+                DownloadFile(img_url, save_path, file_name).as_image('png')
+                print(f'Done: {img} - {c}')
+        except:
+            print(f'Failed to download {img}')
+    save_masks('/content/sample_data/hpa', '/content/sample_data/hpa/r')
