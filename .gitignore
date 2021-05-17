@@ -1,11 +1,4 @@
-src/utils/__pycache__/download_files.cpython-37.pyc
-src/train/__pycache__
-src/utils/__pycache__/create_tfrecord.cpython-37.pyc
-src/utils/__pycache__/__init__.cpython-37.pyc
-tests/assets/images/a1.jpeg
-tests/assets/images/a2.jpeg
-tests/assets/images/b1.jpg
-tests/assets/images/c1.JPG
-tests/assets/images/c2.JPG
-tests/assets/images/c3.JPG
-tests/assets/images/c4.JPG
+src/train/__pycache__/*
+tests/assets/images/*
+src/__pycache__/*
+src/utils/__pycache__/*
