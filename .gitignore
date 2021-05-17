@@ -2,3 +2,5 @@ src/train/__pycache__/*
 tests/assets/images/*
 src/__pycache__/*
 src/utils/__pycache__/*
+HPA-SingleCellClassification.code-workspace
+.vscode/settings.json
