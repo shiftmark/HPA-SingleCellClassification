@@ -1,7 +1,7 @@
 import pandas as pd
 import os
-from src.utils.download_files import DownloadFile
-from src.utils.get_masks import save_masks
+from utils.download_files import DownloadFile
+from utils.get_masks import save_masks
 
 labels = dict({
     "Nucleoplasm": 0,
@@ -39,12 +39,13 @@ df = df[~df.Label_idx.isna()]
 colors = ['blue', 'red', 'green', 'yellow']
 celllines = ['A-431', 'A549', 'EFO-21', 'HAP1', 'HEK 293', 'HUVEC TERT2', 'HaCaT', 'HeLa', 'PC-3', 'RH-30', 'RPTEC TERT1', 'SH-SY5Y', 'SK-MEL-30', 'SiHa', 'U-2 OS', 'U-251 MG', 'hTCEpi']
 df_17 = df[df.Cellline.isin(celllines)]
-print(len(df), len(df_17))
-print(df_17.head())
-
-for idx, row in df_17[0:5].iterrows():
+print(f'\nThere are {len(df_17)} images in the dataset.')
+print(f'\nThe dataset head is: \n{df_17.head()}.')
+to_download = df_17[0:5]
+for idx, row in to_download.iterrows():
     try:
         img = row.Image
+        print(f'Attmpting to download {len(to_download)} images.')
         for c in colors:
             img_url = f'{img}_{c}.tif.gz'
             save_path = '/content/sample_data/hpa'
