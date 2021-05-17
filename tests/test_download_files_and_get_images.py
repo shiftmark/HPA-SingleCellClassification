@@ -33,7 +33,7 @@ labels = dict({
     "No staining": 18
 })
 
-df = pd.read_csv('/content/HPA-SingleCellClassification/src/utils/kaggle_2021.tsv')
+df = pd.read_csv('/content/HPA-SingleCellClassification/tests/assets/kaggle_2021.tsv')
 df = df[~df.Label_idx.isna()]
 
 colors = ['blue', 'red', 'green', 'yellow']
