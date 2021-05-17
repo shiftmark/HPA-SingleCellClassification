@@ -42,8 +42,8 @@ df_17 = df[df.Cellline.isin(celllines)]
 print(f'\nThere are {len(df_17)} images in the dataset.')
 print(f'\nThe dataset head is: \n{df_17.head()}.')
 to_download = df_17[0:50]
+print(f'Attmpting to download {len(to_download)} images.')
 for idx, row in to_download.iterrows():
-    print(f'Attmpting to download {len(to_download)} images.')
     try:
         img = row.Image       
         for c in colors:
