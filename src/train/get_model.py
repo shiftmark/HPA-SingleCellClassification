@@ -8,11 +8,11 @@ class GetModel():
         
         self.applications = tf.keras.applications
         self.model = None
-        self.include_top = True
+        self.include_top = None
         
     def set_backbone(self, backbone_name: str, include_top=True, **kwargs):
         """
-        Sets the model backbone. Can be chained with 'add_top()' or used as is.
+        Sets the model backbone. Can be chained with 'add_top()' only when 'include_top=False'.
         Args:
             backbone_name (str): The name of the backbone to use. Supported names: all from 'tf.keras.applications'. Please check documentation: https://www.tensorflow.org/api_docs/python/tf/keras/applications .
             include_top (bool): If True, the backbone will include it's default top (head).
@@ -23,8 +23,11 @@ class GetModel():
 
         attributes = getattr(self.applications, backbone_name)
         self.include_top = include_top
+
         if callable(attributes):
-            self.model = attributes(**kwargs)
+            self.model = attributes(include_top, **kwargs)
+            if not include_top:
+                return self
             return self.model
         else:
             raise(ValueError(f"The backbone name ({backbone_name}) is not valid. Please check the tf.kera.applications documentation."))
