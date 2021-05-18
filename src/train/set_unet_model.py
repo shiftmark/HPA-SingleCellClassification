@@ -69,9 +69,9 @@ class Unet():
         '''
         
         features1, down_step1 = cls.encoder_block(inputs, level='Level_1')
-        features2, down_step2 = cls._encoder_block(down_step1, n_filters=128, level='Level_2')
-        features3, down_step3 = cls._encoder_block(down_step2, n_filters=256, level='Level_3')
-        features4, down_step4 = cls._encoder_block(down_step3, n_filters=512, level='Level_4')
+        features2, down_step2 = cls.encoder_block(down_step1, n_filters=128, level='Level_2')
+        features3, down_step3 = cls.encoder_block(down_step2, n_filters=256, level='Level_3')
+        features4, down_step4 = cls.encoder_block(down_step3, n_filters=512, level='Level_4')
         
         return down_step4, (features1, features2, features3, features4)
 
@@ -136,8 +136,7 @@ class Unet():
         
         return outputs
 
-    @classmethod
-    def unet(cls):
+    def unet(self):
         '''
         Define the U-Net model by connecting the encoder, bottleneck and decoder.
         
@@ -145,12 +144,12 @@ class Unet():
         Returns:
             model (model) - the U-net model.
         '''
-        inputs = Input(shape=(512, 512, 1), name='input')
-        down_step4, features = cls.encoder(inputs)
+        inputs = Input(shape=self.input_shape, name='input')
+        down_step4, features = self.encoder(inputs)
         
-        bottle_neck = cls.bottleneck(down_step4)
+        bottle_neck = self.bottleneck(down_step4)
         
-        outputs = cls.decoder(bottle_neck, features)
+        outputs = self.decoder(bottle_neck, features)
         
         model = Model(inputs=inputs, outputs=outputs, name='U-net')
         
