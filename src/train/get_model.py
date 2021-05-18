@@ -1,28 +1,61 @@
 import tensorflow as tf
 
-import numpy as np
 class GetModel():
     """
-    Define the model using a backbone from tf.keras.applications and add custom heads.
+    Define the model using a backbone from tf.keras.applications and add a custom top (head).
     """
-    def __init__(self, backbone_name):
-        self.backbone_name = backbone_name
-        self.applications = tf.keras.applications
+    def __init__(self):
         
-    def _set_backbone(self, *args, **kwargs): # input_shape, include_top=False, weights='imagenet', pooling='avg'
-        attributes = getattr(self.applications, self.backbone_name)
-        if hasattr(self.applications, self.backbone_name) and callable(attributes):
-            return attributes(*args, **kwargs)
+        self.applications = tf.keras.applications
+        self.model = None
+        self.include_top = True
+        
+    def set_backbone(self, backbone_name: str, include_top=True, **kwargs):
+        """
+        Sets the model backbone. Can be chained with 'add_top()' or used as is.
+        Args:
+            backbone_name (str): The name of the backbone to use. Supported names: all from 'tf.keras.applications'. Please check documentation: https://www.tensorflow.org/api_docs/python/tf/keras/applications .
+            include_top (bool): If True, the backbone will include it's default top (head).
+            **kwargs: The remaining keyward arguments from the backbone. See documentation mentioned above. 
+        Returns:
+            self.model: The backbone model with specified parameters.
+        """
 
-    def add_head(_set_backbone, n_classes: int, dropout: float, nodes: int, *args, **kwargs):
-        backbone = _set_backbone(*args, **kwargs)
-        x = tf.keras.layers.BatchNormalization()(backbone.output)
-        x = tf.keras.layers.Dropout(dropout)(x)
+        attributes = getattr(self.applications, backbone_name)
+        self.include_top = include_top
+        if callable(attributes):
+            self.model = attributes(**kwargs)
+            return self.model
+        else:
+            raise(ValueError(f"The backbone name ({backbone_name}) is not valid. Please check the tf.kera.applications documentation."))
 
-        x = tf.keras.layers.Dense(nodes, activation='relu')
-        x = tf.keras.layers.BatchNormalization()(x)
-        x = tf.keras.layers.Dropout(dropout)(x)
+    def add_top(self, n_classes: int, dropout: float, nodes: int):
+        """
+        Adds the top to model backbone (stored in self.model). It should be chained to 'set_backbone()'.
+        The top architecture is:
+        (in) -> BatchNormalization -> Dropout -> Dense -> BatchNormalization -> Dropout -> Dense -> (out)
+        
+        Args:
+            n_classes (int): The number of output classes.
+            dropout (float): The dropout rate.
+            nodex (int): The number of neurond in the dense layer.
+        
+        Returns:
+            self.model: Updates model which already has the backbone.
 
-        output = tf.keras.layers.Dense(n_classes, activation='sigmoid')(x)
+        """
+        if not self.include_top:
+            x = tf.keras.layers.BatchNormalization()(self.model.output)
+            x = tf.keras.layers.Dropout(dropout)(x)
 
-        return tf.keras.Model(inputs=backbone.inputs, outputs=output)
+            x = tf.keras.layers.Dense(nodes, activation='relu')(x)
+            x = tf.keras.layers.BatchNormalization()(x)
+            x = tf.keras.layers.Dropout(dropout)(x)
+
+            output = tf.keras.layers.Dense(n_classes, activation='sigmoid')(x)
+            self.model = tf.keras.Model(inputs=self.model.inputs, outputs=output)
+            
+            return self.model
+        else:
+            raise(ValueError(f"The backbone already has a top. Set 'include_top=False' when calling 'set_backbone', then call 'add_top'."))
+
