@@ -9,49 +9,20 @@ class GetModel():
         self.backbone_name = backbone_name
         self.applications = tf.keras.applications
         
-    def set_backbone(self, input_shape, include_top=False, weights='imagenet', pooling='avg'):
+    def _set_backbone(self, *args, **kwargs): # input_shape, include_top=False, weights='imagenet', pooling='avg'
         attributes = getattr(self.applications, self.backbone_name)
         if hasattr(self.applications, self.backbone_name) and callable(attributes):
-            attributes(input_shape, include_top, weights, pooling)
+            return attributes(*args, **kwargs)
 
-    def add_head(dense_neurons, ):
-        pass   
+    def add_head(_set_backbone, n_classes: int, dropout: float, nodes: int, *args, **kwargs):
+        backbone = _set_backbone(*args, **kwargs)
+        x = tf.keras.layers.BatchNormalization()(backbone.output)
+        x = tf.keras.layers.Dropout(dropout)(x)
 
-b = GetModel('append').set_backbone()
+        x = tf.keras.layers.Dense(nodes, activation='relu')
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.Dropout(dropout)(x)
 
-#a = np.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])
-print(b)
-# set backbone
-# add head
-import math
+        output = tf.keras.layers.Dense(n_classes, activation='sigmoid')(x)
 
-class Rectangle:
-
-    def __init__(self, length, width):
-        self.length = length
-        self.width = width
-
-    def do_area(self, e):
-        area = self.length * self.width * e
-        print(f"The area of the rectangle is: {area}")
-
-    def do_perimeter(self):
-        perimeter = (self.length + self.width) * 2
-        print(f"The perimeter of the rectangle is: {perimeter}")
-
-    def do_diagonal(self):
-        diagonal = math.sqrt(self.length ** 2 + self.width ** 2)
-        print(f"The diagonal of the rectangle is: {diagonal}")
-
-    def solve_for(self, name, r):
-        do = f"do_{name}"
-        func = getattr(self, do)
-        if hasattr(self, do) and callable(func):
-            func(r)
-
-rectangle = Rectangle(31, 5)
-
-rectangle.solve_for('area', 73)
-#rectangle.solve_for('perimeter')
-#rectangle.solve_for('diagonal')
-rectangle.do_area(3)
+        return tf.keras.Model(inputs=backbone.inputs, outputs=output)
