@@ -18,9 +18,6 @@ class CreateTFRecord:
         self.img_dir = img_dir
         self.label_dict = label_dict 
         self.files = [os.listdir(self.img_dir)]
-        if not os.path.exists(self.save_to):
-            os.makedirs(self.save_to)
-        
 
     @staticmethod
     def _bytes_feature(value):
