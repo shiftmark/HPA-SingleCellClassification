@@ -17,8 +17,8 @@ class CreateTFRecord:
     def __init__(self, img_dir, label_dict):
         self.img_dir = img_dir
         self.label_dict = label_dict 
-        self.files = [os.listdir(self.img_dir)]
-        
+        self.files = os.listdir(self.img_dir)
+
     @staticmethod
     def _bytes_feature(value):
         """Returns a bytes_list from a string."""
@@ -57,17 +57,17 @@ class CreateTFRecord:
         example_proto = tf.train.Example(features=tf.train.Features(feature=features))
         return example_proto.SerializeToString()
 
-    def write_to(self, save_to='./'):
+    def write_to(self, save_to='.'):
         """
         Writes serialized data to TFRecord named recprd.tfrec.
         Args: 
-            save_to (str) - Path to destination folder. Default: './'
+            save_to (str) - Path to destination folder. Default: '.'
         Returns: None - saves the file to location.
         """
-        writer = tf.io.TFRecordWriter(save_to + 'record.tfrec')
+        
         if not os.path.exists(save_to):
             os.makedirs(save_to)
-
+        writer = tf.io.TFRecordWriter(save_to + '/record.tfrec')
         with writer as w:
             for file in self.files:
                 img_name = file.split('.')[0]
