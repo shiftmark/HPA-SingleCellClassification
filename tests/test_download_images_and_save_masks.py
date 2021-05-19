@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from utils.download_files import DownloadFile
-from utils.get_masks import save_masks
+#from utils.get_masks import save_masks
 
 labels = dict({
     "Nucleoplasm": 0,
@@ -42,7 +42,7 @@ df_17 = df[df.Cellline.isin(celllines)]
 print(f'\nThere are {len(df_17)} images in the dataset.')
 print(f'\nThe dataset head is: \n{df_17.head()}.')
 
-def test_on(num_img=5):
+def download(num_img=5, to_dir='/content/sample_data/hpa'):
     to_download = df_17[0:num_img]
     print(f'Attmpting to download 4 x {len(to_download)} images. One for each RGBY channel.')
     for idx, row in to_download.iterrows():
@@ -50,10 +50,12 @@ def test_on(num_img=5):
             img = row.Image       
             for c in colors:
                 img_url = f'{img}_{c}.tif.gz'
-                save_path = '/content/sample_data/hpa'
+                save_path = to_dir
                 file_name = f'{os.path.basename(img)}_{c}'
                 DownloadFile(img_url, save_path, file_name).as_image('png')
                 print(f'Done: {img} - {c}')
         except:
             print(f'Failed to download {img}')
-    save_masks('/content/sample_data/hpa', '/content/sample_data/hpa/r')
+
+def test(from_dir='/content/sample_data/hpa', to_dir='/content/sample_data/hpa/r'):
+    save_masks(from_dir, to_dir)
