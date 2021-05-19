@@ -2,7 +2,7 @@ import tensorflow as tf
 
 class ParseExample:
     '''
-    Parse a tfrecord from path.
+    Parse an item serialized dataset.
     features: img_name - tf.io.FixedLenFeature (string)
               img - tf.io.FixedLenFeature (string) - png encoded
               label - tf.io.FixedLenFeature (int64)
@@ -26,4 +26,3 @@ class ParseExample:
         if self.return_img_name:
             return img_name, img, label
         return img, label
-        

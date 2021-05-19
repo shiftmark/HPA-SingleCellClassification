@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from utils.download_files import DownloadFile
-#from utils.get_masks import save_masks
+from utils.get_masks import save_masks
 
 labels = dict({
     "Nucleoplasm": 0,

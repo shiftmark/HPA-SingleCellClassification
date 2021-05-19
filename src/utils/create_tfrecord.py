@@ -32,7 +32,7 @@ class CreateTFRecord:
     @staticmethod
     def _int64_feature(value):
         """Returns an int64_list from a bool / enum / int / uint."""
-        return tf.train.Feature(int64=tf.train.Int64List(value=[value]))
+        return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
 
     @staticmethod
     def _image_feature(value):
@@ -63,15 +63,15 @@ class CreateTFRecord:
         Args: 
             save_to (str) - Path to destination folder. Default: '.'
         Returns: None - saves the file to location.
-        """
-        
+        """        
         if not os.path.exists(save_to):
             os.makedirs(save_to)
         writer = tf.io.TFRecordWriter(save_to + '/record.tfrec')
+        
         with writer as w:
             for file in self.files:
                 img_name = file.split('.')[0]
-                img = tf.io.decode_png(tf.io.read_file(f'{self.img_dir}{file}'))
+                img = tf.io.decode_png(tf.io.read_file(f'{self.img_dir}/{file}'))
                 label = self.label_dict[img_name]
                 serialized = self.serialize(img_name, img, label)
                 w.write(serialized)

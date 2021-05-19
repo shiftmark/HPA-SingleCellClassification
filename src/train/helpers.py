@@ -13,12 +13,16 @@ def plot_images(images, fig_size=(10,10), show_axes=True):
         Plot of 9 or less images
     '''
     images = images[:9]
+
     def plt_img(imgs):
         plt.figure(figsize=fig_size)
+
         for idx, img in enumerate(imgs):
+            shape_two = len(img.shape) == 2
             plt.subplot(3, 3, idx+1)
-            plt.imshow(img)
+            plt.imshow(img, cmap='gray') if shape_two else plt.imshow(img)
             plt.axis(show_axes)
+
         plt.tight_layout()
         plt.show()
      
@@ -46,6 +50,7 @@ def plot_history(history, metrics=['loss'], grid=True, legend=True):
     '''
     
     plt.figure(figsize=(12, 12))
+
     for idx, metric in enumerate(metrics):
         plt.subplot(9, 1, idx+1)
         plt.xlabel('Epochs', fontweight='bold')
