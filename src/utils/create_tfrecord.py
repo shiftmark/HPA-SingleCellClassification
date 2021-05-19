@@ -18,7 +18,7 @@ class CreateTFRecord:
         self.img_dir = img_dir
         self.label_dict = label_dict 
         self.files = [os.listdir(self.img_dir)]
-
+        
     @staticmethod
     def _bytes_feature(value):
         """Returns a bytes_list from a string."""
@@ -65,6 +65,9 @@ class CreateTFRecord:
         Returns: None - saves the file to location.
         """
         writer = tf.io.TFRecordWriter(save_to + 'record.tfrec')
+        if not os.path.exists(save_to):
+            os.makedirs(save_to)
+
         with writer as w:
             for file in self.files:
                 img_name = file.split('.')[0]
