@@ -16,8 +16,8 @@ class Unet():
             input_tensor (tensor) - the input tensor;
             n_filters (int) - the number of convolution filters;
             kernel_size (int) - the kernel size for the convolution;
-            level (string) - on which level the layer is
-            side (string) - Encoder, Bottleneck or Decoder
+            level (string) - on which level the layer is;
+            side (string) - Encoder, Bottleneck or Decoder.
                 
         Returns:
             tensor of output features.        
@@ -40,7 +40,7 @@ class Unet():
             n_filters (int) - the number of filters;
             pool_size (tuple of 2 ints) - the pooling window size, for MaxPooling layers;
             dropout (float) - the neuron dropout rate for Dropout layers;
-            level (string) - on which level the layer is
+            level (string) - on which level the layer is.
             
             
         Returns:
@@ -154,5 +154,3 @@ class Unet():
         model = Model(inputs=inputs, outputs=outputs, name='U-net')
         
         return model
-        
-        

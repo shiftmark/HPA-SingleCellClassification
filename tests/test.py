@@ -47,3 +47,35 @@ class RightPyramid(Square, Triangle):
         triangle_area = super().tri_area()
         return triangle_area * 4 + base_area
 
+import math
+
+class Rectangle2:
+
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def do_area(self, e):
+        area = self.length * self.width * e
+        print(f"The area of the rectangle is: {area}")
+
+    def do_perimeter(self):
+        perimeter = (self.length + self.width) * 2
+        print(f"The perimeter of the rectangle is: {perimeter}")
+
+    def do_diagonal(self):
+        diagonal = math.sqrt(self.length ** 2 + self.width ** 2)
+        print(f"The diagonal of the rectangle is: {diagonal}")
+
+    def solve_for(self, name, r):
+        do = f"do_{name}"
+        func = getattr(self, do)
+        if hasattr(self, do) and callable(func):
+            func(r)
+
+#rectangle2 = Rectangle(31, 5)
+
+#rectangle2.solve_for('area', 73)
+#rectangle2.solve_for('perimeter')
+#rectangle2.solve_for('diagonal')
+#rectangle2.do_area(3)
