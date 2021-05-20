@@ -46,7 +46,7 @@ class Augment():
         return tf.image.stateless_random_saturation(image, **kwargs, seed=self.seed)
 
     def _augment(self, image, label=None):
-        image = self._brightness(image, self.brightness) if self.brightness else image
+        image = self._brightness(image, **self.brightness) if self.brightness else image
         image = self._contrast(image, **self.contrast) if self.contrast else image
         image = self._flip_horizontal(image) if self.flip_horizontal else image
         image = self._flip_vertical(image) if self.flip_vertical else image
