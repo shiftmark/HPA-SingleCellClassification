@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 from utils.download_files import DownloadFile
-from utils.get_masks import save_masks
+###moved to test method: from utils.get_masks import save_masks 
+
 
 labels = dict({
     "Nucleoplasm": 0,
@@ -58,4 +59,5 @@ def download(num_img=5, to_dir='/content/sample_data/hpa'):
             print(f'Failed to download {img}')
 
 def test(from_dir='/content/sample_data/hpa', to_dir='/content/sample_data/hpa/r'):
+    from utils.get_masks import save_masks
     save_masks(from_dir, to_dir)
