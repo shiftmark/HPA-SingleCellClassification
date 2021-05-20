@@ -1,3 +1,4 @@
+import cv2
 import pandas as pd
 import os
 from utils.download_files import DownloadFile
@@ -37,7 +38,7 @@ labels = dict({
 df = pd.read_csv('/content/HPA-SingleCellClassification/tests/assets/kaggle_2021.tsv')
 df = df[~df.Label_idx.isna()]
 
-colors = ['blue', 'red', 'green', 'yellow']
+colors = ['blue', 'green', 'red']#, 'yellow']
 celllines = ['A-431', 'A549', 'EFO-21', 'HAP1', 'HEK 293', 'HUVEC TERT2', 'HaCaT', 'HeLa', 'PC-3', 'RH-30', 'RPTEC TERT1', 'SH-SY5Y', 'SK-MEL-30', 'SiHa', 'U-2 OS', 'U-251 MG', 'hTCEpi']
 df_17 = df[df.Cellline.isin(celllines)]
 print(f'\nThere are {len(df_17)} images in the dataset.')
@@ -48,13 +49,18 @@ def download(num_img=5, to_dir='/content/sample_data/hpa'):
     print(f'Attmpting to download 4 x {len(to_download)} images. One for each RGBY channel.')
     for idx, row in to_download.iterrows():
         try:
-            img = row.Image       
+            img = row.Image
+            save_path = f'{to_dir}/{os.path.basename(img)}'
+            cols = []      
             for c in colors:
-                img_url = f'{img}_{c}.tif.gz'
-                save_path = to_dir
+                img_url = f'{img}_{c}.tif.gz'                
                 file_name = f'{os.path.basename(img)}_{c}'
                 DownloadFile(img_url, save_path, file_name).as_image('png')
+                cols.append(cv2.imread(os.path.join(save_path, file_name+'.png'), cv2.IMREAD_GRAYSCALE))
                 print(f'Done: {img} - {c}')
+            print(cols)
+            cv2.imwrite(f'/content/sample_data/hpa/tc/{os.path.basename(img)}.png', cv2.merge(cols))
+
         except:
             print(f'Failed to download {img}')
 
