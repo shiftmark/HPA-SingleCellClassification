@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-class GetModel():
+class GetModel:
     """
     Define the model using a backbone from tf.keras.applications and add a custom top (head).
     """
