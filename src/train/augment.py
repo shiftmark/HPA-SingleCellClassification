@@ -54,7 +54,7 @@ class Augment():
         image = self._rotate(image, **self.rotate) if self.rotate else image
         image = self._saturation(image, **self.saturation) if self.saturation else image
 
-        if label:
+        if label is not None:
             return image, label
         return image
 
