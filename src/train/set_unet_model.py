@@ -1,7 +1,7 @@
 from tensorflow.keras.layers import Activation, Conv2D, concatenate, Conv2DTranspose, Dropout, Input, MaxPool2D
 from tensorflow.keras import Model
 
-class Unet():
+class Unet:
 
     def __init__(self, input_shape, n_classes):
         self.input_shape = input_shape
