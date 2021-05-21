@@ -63,7 +63,7 @@ def download(num_img=5, to_dir='/content/sample_data/hpa'):
                 DownloadFile(img_url, save_path, file_name).as_image('png')
                 cols.append(cv2.imread(os.path.join(save_path, file_name+'.png'), cv2.IMREAD_GRAYSCALE))
                 print(f'Done: {img} - {c}')
-            save_tc = save_path+'tc'
+            save_tc = f'{to_dir}/tc/'
             if not os.path.exists(save_tc):
                 os.makedirs(save_tc)
             cv2.imwrite(os.path.join(save_tc, os.path.basename(img)+'.png'), cv2.merge(cols))
