@@ -2,7 +2,7 @@ import cv2
 import pandas as pd
 import os
 from utils.download_files import DownloadFile
-###moved to test method: from utils.get_masks import save_masks 
+#from utils.get_masks import save_masks ##moved to test method:
 
 
 labels = dict({
@@ -39,7 +39,12 @@ df = pd.read_csv('/content/HPA-SingleCellClassification/tests/assets/kaggle_2021
 df = df[~df.Label_idx.isna()]
 
 colors = ['blue', 'green', 'red']#, 'yellow']
-celllines = ['A-431', 'A549', 'EFO-21', 'HAP1', 'HEK 293', 'HUVEC TERT2', 'HaCaT', 'HeLa', 'PC-3', 'RH-30', 'RPTEC TERT1', 'SH-SY5Y', 'SK-MEL-30', 'SiHa', 'U-2 OS', 'U-251 MG', 'hTCEpi']
+celllines = [
+    'A-431', 'A549', 'EFO-21','HAP1', 'HEK 293', 
+    'HUVEC TERT2', 'HaCaT', 'HeLa', 'PC-3', 'RH-30',
+    'RPTEC TERT1', 'SH-SY5Y', 'SK-MEL-30', 'SiHa', 
+    'U-2 OS', 'U-251 MG', 'hTCEpi'
+    ]
 df_17 = df[df.Cellline.isin(celllines)]
 print(f'\nThere are {len(df_17)} images in the dataset.')
 print(f'\nThe dataset head is: \n{df_17.head()}.')
@@ -58,8 +63,11 @@ def download(num_img=5, to_dir='/content/sample_data/hpa'):
                 DownloadFile(img_url, save_path, file_name).as_image('png')
                 cols.append(cv2.imread(os.path.join(save_path, file_name+'.png'), cv2.IMREAD_GRAYSCALE))
                 print(f'Done: {img} - {c}')
-            print(cols)
-            cv2.imwrite(f'/content/sample_data/hpa/tc/{os.path.basename(img)}.png', cv2.merge(cols))
+            save_tc = save_path+'tc'
+            if not os.path.exists(save_tc):
+                os.makedirs(save_tc)
+            cv2.imwrite(os.path.join(save_tc, os.path.basename(img)+'.png'), cv2.merge(cols))
+            print(f'Stack image {os.path.basename(img)}.png saved.')
 
         except:
             print(f'Failed to download {img}')
