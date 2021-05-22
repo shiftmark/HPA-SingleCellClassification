@@ -1,3 +1,7 @@
+import tensorflow as tf
+
+a = b = tf.constant([3,4])
+print(tf.add(a,b))
 class Rectangle:
     def __init__(self, lenght, width, **kwargs):
         self.lenght = lenght
@@ -55,8 +59,8 @@ class Rectangle2:
         self.length = length
         self.width = width
 
-    def do_area(self, e):
-        area = self.length * self.width * e
+    def do_area(self):
+        area = self.length * self.width
         print(f"The area of the rectangle is: {area}")
 
     def do_perimeter(self):
@@ -67,15 +71,15 @@ class Rectangle2:
         diagonal = math.sqrt(self.length ** 2 + self.width ** 2)
         print(f"The diagonal of the rectangle is: {diagonal}")
 
-    def solve_for(self, name, r):
+    def solve_for(self, name):
         do = f"do_{name}"
         func = getattr(self, do)
         if hasattr(self, do) and callable(func):
-            func(r)
+            func()
 
-#rectangle2 = Rectangle(31, 5)
+rectangle2 = Rectangle2(31, 5)
 
-#rectangle2.solve_for('area', 73)
-#rectangle2.solve_for('perimeter')
-#rectangle2.solve_for('diagonal')
-#rectangle2.do_area(3)
+rectangle2.solve_for('area')
+rectangle2.solve_for('perimeter')
+rectangle2.solve_for('diagonal')
+

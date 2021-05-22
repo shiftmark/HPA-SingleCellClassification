@@ -67,15 +67,4 @@ class Augment():
             dataset.map object
         """
         return dataset.map(self._augment, num_parallel_calls=tf.data.AUTOTUNE)
-
-
-
-
-
-
-
-    
-
-
-
-    
+        
