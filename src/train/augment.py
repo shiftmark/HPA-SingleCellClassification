@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-class Augment():
+class Augment:
     """
     Apply augmentation on the a dataset via .map method from tf.data.Dataset API.
     Args:
