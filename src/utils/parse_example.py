@@ -16,12 +16,12 @@ class ParseExample:
         features = {
             'img_name': tf.io.FixedLenFeature([], tf.string),
             'img': tf.io.FixedLenFeature([], tf.string),
-            'label': tf.io.FixedLenFeature([], tf.int64)
+            'label': tf.io.FixedLenFeature([], tf.string)
         }
         eg = tf.io.parse_single_example(self.example, features)
         img_name = eg['img_name']
         img = tf.image.decode_png(eg['img'])
-        label = eg['label']
+        label = tf.io.decode_raw(eg['label'], out_type=tf.uint8)
 
         if self.return_img_name:
             return img_name, img, label
