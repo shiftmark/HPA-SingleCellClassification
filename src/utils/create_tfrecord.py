@@ -52,7 +52,7 @@ class CreateTFRecord:
         return tf.train.Feature(bytes_list=tf.train.BytesList(value=[bytes(value)]))
 
     @classmethod
-    def serialize(cls, img_name, img, label):
+    def serialize(cls, img_name, img, lbl):
         """
         Serialize img_name, img, label to byte string.
         Args:
@@ -64,7 +64,7 @@ class CreateTFRecord:
         features = {
             'img_name': cls._bytes_feature(img_name),
             'img': cls._image_feature(img),
-            'label': cls._one_hot_feature(label)
+            'label': cls._one_hot_feature(lbl)
         }
         example_proto = tf.train.Example(features=tf.train.Features(feature=features))
         return example_proto.SerializeToString()
@@ -96,9 +96,9 @@ class CreateTFRecord:
                     img = tf.io.decode_png(tf.io.read_file(f'{self.img_dir}/{fl}'))
                     if isinstance(self.labels, dict):
                         label = self.labels[img_name]
-                    elif isinstance(self.labels, pd.DataFrame):
+                    if isinstance(self.labels, pd.DataFrame):
                         label = self.labels.at[img_name, 'Labels']
-
+                    
                     serialized = self.serialize(img_name, img, label)
                     w.write(serialized)
     def test(self, save_to='.', num_items_in_record=10):
