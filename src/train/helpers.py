@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import tensorflow as tf
 import numpy as np
 import os
 
@@ -27,14 +28,16 @@ def plot_images(images, fig_size=(10,10), show_axes=True):
         plt.show()
      
     for idx, img in enumerate(images):
-        if not isinstance(img, (np.ndarray, str)):
-            raise TypeError(f'The input type must be a list of numpy arrays or strings but got {type(img)}')
+        if not isinstance(img, (np.ndarray, str, tf.Tensor)):
+            raise TypeError(f'The input type must be a list of numpy arrays, strings or tf tensors but got {type(img)}')
 
         if isinstance(img, str):
             if not os.path.exists(img):
                 raise ValueError(f'The string "{img}" is not a valid local path.')
             else:
                 images[idx] = plt.imread(img)
+        if isinstance(img, tf.Tensor):
+            images[idx] = img.numpy()
                 
     return plt_img(images)
 
