@@ -7,7 +7,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import pandas as pd
 
-sys.path.insert(0, './src/')
+sys.path.insert(0, '/home/adrian/Documents/HPA-SingleCellClassification/src')
 
 from utils.download_files import DownloadFile
 from utils.create_tfrecord import CreateTFRecord
@@ -15,17 +15,20 @@ from utils.parse_example import ParseExample
 from train.helpers import plot_images, plot_history
 from train.augment import Augment
 from train.get_model import GetModel
+
 import train.constants as c
+import utils.get_masks as gm
+
 
 def download(num_img=c.NUM_IMGS, to_dir=c.SAVE_IMG_TO):
     to_download = c.DF_CL[:num_img]
     print(f'Attempting to download {len(to_download)} x 4 images. One for each RGBY channel.')
 
     for idx, row in to_download.iterrows():
-        try:
+        # try:
             img = row.Image
-            save_path = f'{to_dir}/{os.path.basename(img)}'
-            color_channels = []
+            save_path = f'{to_dir}'#/{os.path.basename(img)}'
+            # color_channels = []
             for color in c.COLORS:
                 img_url = f'{img}_{color}.tif.gz'
                 file_name = f'{os.path.basename(img)}_{color}'
@@ -35,18 +38,18 @@ def download(num_img=c.NUM_IMGS, to_dir=c.SAVE_IMG_TO):
                 except:
                     print(f'Failed to download {img_url}.')
                 
-                color_channels.append(cv2.imread(os.path.join(save_path, file_name+c.IMG_FORMAT),
-                                      cv2.IMREAD_GRAYSCALE))
+                # color_channels.append(cv2.imread(os.path.join(save_path, file_name+c.IMG_FORMAT),
+                #                       cv2.IMREAD_GRAYSCALE))
             
-            if not os.path.exists(c.MULTICHANNEL_IMGS):
-                os.makedirs(c.MULTICHANNEL_IMGS)
+            # if not os.path.exists(c.MULTICHANNEL_IMGS):
+            #     os.makedirs(c.MULTICHANNEL_IMGS)
 
-            cv2.imwrite(os.path.join(c.MULTICHANNEL_IMGS,
-                                     os.path.basename(img)+c.IMG_FORMAT),
-                        cv2.merge(color_channels))
-            print(f'Multichannel image {os.path.basename(img)+c.IMG_FORMAT} saved.')
-        except:
-            print(f'Failed to save multichannel image {os.path.basename(img)+c.IMG_FORMAT}')
+            # cv2.imwrite(os.path.join(c.MULTICHANNEL_IMGS,
+            #                          os.path.basename(img)+c.IMG_FORMAT),
+            #             cv2.merge(color_channels))
+            # print(f'Multichannel image {os.path.basename(img)+c.IMG_FORMAT} saved.')
+        # except:
+        #     print(f'Failed to save multichannel image {os.path.basename(img)+c.IMG_FORMAT}')
 
 def labels_df(df):
     one_hot = pd.Series(df.Label_idx).str.get_dummies()
@@ -69,13 +72,12 @@ def labels_df(df):
     return df
 
 # download and create tfrecord
-download(9)
-
-CreateTFRecord(c.MULTICHANNEL_IMGS, labels_df(c.DF)).write_to(c.SAVE_TFREC_TO, num_items_in_record=13)
+#download(8)
+#CreateTFRecord(c.MULTICHANNEL_IMGS, labels_df(c.DF)).write_to(c.SAVE_TFREC_TO, num_items_in_record=13)
 
 
 #segment
-
+gm.save_masks(c.SAVE_IMG_TO, c.SAVE_IMG_TO)
 
 #train
 
