@@ -29,12 +29,12 @@ LABELS = dict({
     "Cytoplasmic bodies": 17,
     "No staining": 18
 })
-SAVE_IMG_TO = GET_IMG_FROM = '../src/train/assets/images'
-MULTICHANNEL_IMGS = '../src/train/assets/images/multichannel'
-SAVE_TFREC_TO = '../src/train/assets/tfrec'
-SAVE_MASKS_TO = '../src/train/assets/masks'
+SAVE_IMG_TO = GET_IMG_FROM = 'src/train/assets/images'
+MULTICHANNEL_IMGS = 'src/train/assets/images/multichannel'
+SAVE_TFREC_TO = 'src/train/assets/tfrec'
+SAVE_MASKS_TO = 'src/train/assets/masks'
 
-COLORS = ['blue', 'green', 'red']#, 'yellow']
+COLORS = ['blue', 'green', 'red', 'yellow']
 CELLLINES = [
     'A-431', 'A549', 'EFO-21','HAP1', 'HEK 293', 
     'HUVEC TERT2', 'HaCaT', 'HeLa', 'PC-3', 'RH-30',
@@ -43,7 +43,7 @@ CELLLINES = [
     ]
 
 # dataframe from kaggle competition
-DF = pd.read_csv('../src/train/assets/kaggle_2021.tsv')
+DF = pd.read_csv('src/train/assets/kaggle_2021.tsv')
 DF = DF[~DF.Label_idx.isna()]
 DF_CL = DF[DF.Cellline.isin(CELLLINES)]
 
