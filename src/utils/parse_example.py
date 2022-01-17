@@ -1,18 +1,18 @@
 import tensorflow as tf
+from typing import Tuple, List, Union, Any
 
 class ParseExample:
-    '''
-    Parse an item serialized dataset.
+    """Parse an item serialized dataset.
     features: img_name - tf.io.FixedLenFeature (string)
               img - tf.io.FixedLenFeature (string) - png encoded
               label - tf.io.FixedLenFeature (int64)
     Returns img_name if return_img_name is True
-    '''
+    """
     def __init__(self, example, return_img_name=False):
         self.example = example
         self.return_img_name = return_img_name
 
-    def parse_eg(self):
+    def parse_eg(self) -> Union[Tuple[Any, Any], Tuple[Any, Any, Any]]:
         features = {
             'img_name': tf.io.FixedLenFeature([], tf.string),
             'img': tf.io.FixedLenFeature([], tf.string),

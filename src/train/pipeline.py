@@ -7,17 +7,15 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import pandas as pd
 
-sys.path.insert(0, '/home/adrian/Documents/HPA-SingleCellClassification/src')
+from ..utils.download_files import DownloadFile
+from ..utils.create_tfrecord import CreateTFRecord
+from ..utils.parse_example import ParseExample
+from ..train.helpers import plot_images, plot_history
+from ..train.augment import Augment
+from ..train.get_model import GetModel
 
-from utils.download_files import DownloadFile
-from utils.create_tfrecord import CreateTFRecord
-from utils.parse_example import ParseExample
-from train.helpers import plot_images, plot_history
-from train.augment import Augment
-from train.get_model import GetModel
-
-import train.constants as c
-import utils.get_masks as gm
+import constants as c
+from ..utils import get_masks as gm
 
 
 def download(num_img=c.NUM_IMGS, to_dir=c.SAVE_IMG_TO):
@@ -35,8 +33,8 @@ def download(num_img=c.NUM_IMGS, to_dir=c.SAVE_IMG_TO):
 
                 try:
                     DownloadFile(img_url, save_path, file_name).as_image(c.IMG_FORMAT)
-                except:
-                    print(f'Failed to download {img_url}.')
+                except Exception as err:
+                    print(f'Failed to download {img_url}. Error: {err}')
                 
                 # color_channels.append(cv2.imread(os.path.join(save_path, file_name+c.IMG_FORMAT),
                 #                       cv2.IMREAD_GRAYSCALE))

@@ -7,13 +7,12 @@ import requests
 
 class DownloadFile:
     """ 
-    Dowload files using a link and specifying a filename and location.
+    Download files using a URL, specifying a filename and location.
     Args:
-        from_url (string) - The url;
-        to_folder (string) - The location to save the file to. If the folder doesn't exist, it will be created.
-        file_name (string) - The file name. When calling 'as_image' method, the extension is specified in the 'format' argument.
+        from_url (string) - The url
+        to_folder (string) - The location to save the file to. If the folder doesn't exist, it will be created
+        file_name (string) - The file name. When calling 'as_image', the extension is set in the 'format' argument.
     """
-
     def __init__(self, from_url, to_folder, file_name):
         self.from_url = from_url
         self.to_folder = to_folder
@@ -25,7 +24,7 @@ class DownloadFile:
         """
         Save file as image.
         Args:
-            format (string) - The image format to save as. Default is '.png'. The dot is required.
+            file_format: (string) - The image format to save as. Default is '.png'. The dot is required.
         Returns:
             None. Writes the file on disk.
         """
@@ -38,7 +37,7 @@ class DownloadFile:
 
     def as_is(self):
         """
-        Opens the file (bytes) and writes it on disk. Specify the extenstion in the 'file_name' class argument.
+        Opens the file (bytes) and writes it on disk. Specify the extension in the 'file_name' class argument.
         Args: None
         Returns: None
         """

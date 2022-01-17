@@ -1,11 +1,13 @@
+"""Save masks using CellSegmentation"""
 import hpacellseg.cellsegmentator as cellsegmentator
 from hpacellseg.utils import label_cell#, label_nuclei
+from typing import List
 import glob
 import os
 import imageio
  
-NUC_MODEL = 'nucleai-model.pth' # will be downloaded if doesn't exist
-CELL_MODEL = 'cell-model.pth' # will be downloaded if doesn't exist
+NUC_MODEL = 'nucleai-model.pth'  # will be downloaded if it doesn't exist
+CELL_MODEL = 'cell-model.pth'  # will be downloaded if it doesn't exist
 SEGMENTATOR = cellsegmentator.CellSegmentator(
     NUC_MODEL,
     CELL_MODEL,
@@ -19,10 +21,10 @@ def save_masks(from_dir, to_dir, save_cell_mask=True, save_nuc_mask=True):
     if not os.path.exists(to_dir):
         os.makedirs(to_dir)
 
-    microtubule = glob.glob(from_dir + '/' + '*_red.png')
-    endo_ret = [e.replace('red', 'yellow') for e in microtubule]
-    nuclei = [n.replace('red', 'blue') for n in microtubule]
-    images = [microtubule, endo_ret, nuclei]
+    microtubule: List[str] = glob.glob(from_dir + '/' + '*_red.png')
+    endo_ret: List[str] = [e.replace('red', 'yellow') for e in microtubule]
+    nuclei: List[str] = [n.replace('red', 'blue') for n in microtubule]
+    images: List[List[str]] = [microtubule, endo_ret, nuclei]
 
     nuc_segmentations = SEGMENTATOR.pred_nuclei(images[2])
     cell_segmetnations = SEGMENTATOR.pred_cells(images)

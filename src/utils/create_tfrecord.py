@@ -6,7 +6,7 @@ class CreateTFRecord:
     """
     Creates a record.tfrec file from images in a directory using labels from:
     1. a {name:label} dictionary OR
-    2. a dataframe with image names in index column and lables in column named 'Labels'.
+    2. a dataframe with image names in index column and labels in column named 'Labels'.
         features:
             img_name - String from filename.split('.')[0];
             img - Array from png encoded image data;
@@ -15,7 +15,7 @@ class CreateTFRecord:
 
     Args:
         img_dir (str) - Path to images folder.
-        labels (dict or pd.DataFrame) - Dictionary or dataframe containig {img_name: label} value pairs.
+        labels (dict or pd.DataFrame) - Dictionary or dataframe containing {img_name: label} value pairs.
     """
 
     def __init__(self, img_dir, labels):
@@ -58,7 +58,7 @@ class CreateTFRecord:
         Args:
             img_name (bytes list) - Image name.
             img (bytes list) - Image data.
-            label (int list) - Label
+            lbl (int list) - Label
         Returns SerializeToString object.
         """
         features = {
@@ -73,16 +73,16 @@ class CreateTFRecord:
         """
         Writes serialized data to a specified number of tfrecords, named 'tfrecord{number}.tfrec'.
         Args: 
-            save_to (str) - Path to destination folder. Default: '.'
-            num_items_in_record - The number if items (img_name, img and/or label) to write in a record. Default: 10
+            save_to (str): Path to destination folder. Default: '.'
+            num_items_in_record:  The number if items (img_name, img and/or label) to write in a record. Default: 10
         Returns: None - saves the file to location.
         """
         
         if not os.path.exists(save_to):
-           os.makedirs(save_to)
+            os.makedirs(save_to)
         
-        num_files = len(self.files)
-        num_records = num_files//num_items_in_record + int(num_files % num_items_in_record != 0)
+        num_files: int = len(self.files)
+        num_records: int = num_files//num_items_in_record + int(num_files % num_items_in_record != 0)
         
         for rec in range(num_records):
             writer = tf.io.TFRecordWriter(save_to + f'/record{rec}.tfrec')
@@ -101,6 +101,7 @@ class CreateTFRecord:
                     
                     serialized = self.serialize(img_name, img, label)
                     w.write(serialized)
+
     def test(self, save_to='.', num_items_in_record=10):
         """
         Prints:
@@ -116,7 +117,7 @@ class CreateTFRecord:
         """
         
         if not os.path.exists(save_to):
-           os.makedirs(save_to)
+            os.makedirs(save_to)
         
         num_files = len(self.files)
         print(f'Number of files: {num_files}')
@@ -127,7 +128,6 @@ class CreateTFRecord:
             ct2 = min(num_items_in_record, num_files-rec*num_items_in_record)
             print(f'Number of items: {ct2}, in record: {rec}')
 
-            
             for i in range(ct2):
                 fl = self.files[num_items_in_record*rec + i]
                 print(f'Item: {fl}')
