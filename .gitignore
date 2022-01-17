@@ -4,10 +4,10 @@ src/__pycache__/*
 src/utils/__pycache__/*
 HPA-SingleCellClassification.code-workspace
 .vscode/settings.json
-HPA-SingleCellClassification.code-workspace
 tests/__pycache__/test_download_images_and_save_masks.cpython-38.pyc
 tests/.ipynb_checkpoints/HPA_testingNotebook-checkpoint.ipynb
 tests/assets/tfrec/*
 tests/logs/*
 src/train/assets/images/*
 src/train/assets/tfrec/*
+/venv/
